@@ -13,12 +13,12 @@ if __name__ == '__main__':
 
     cursor.execute("""
      SELECT
-        (SELECT SUM(new_cases)
+        (SELECT Sum(new_cases) # total cases is the sum of new cases
         FROM covid_deaths
-        WHERE date LIKE '%/02/%') -
-        (SELECT SUM(new_cases)
+        WHERE MONTH(date) = 2) -   # subtraction of total cases in February to total cases in  March
+        (SELECT Sum(new_cases) # total cases is the sum of new cases
         FROM covid_deaths
-        WHERE date LIKE '%/03/%') AS difference;
+        WHERE MONTH(date) = 3)
     """)
     print(', '.join(str(row) for row in cursor.fetchall()))
 
