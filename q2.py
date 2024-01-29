@@ -12,13 +12,15 @@ if __name__ == '__main__':
     # years) and in March(February-March).
 
     cursor.execute("""
-        SELECT x.date, x.new_cases, x.location, y.location
-        FROM (SELECT * FROM covid_deaths LIMIT 1000) As x,
-             (SELECT * FROM covid_deaths LIMIT 1000) AS y
-        WHERE x.new_cases = y.new_cases
-        AND x.location < y.location
-        AND x.date = y.date
-        AND x.new_cases> 1000;
+        # select date, new_cases and to different locations
+        SELECT first.date, first.new_cases, first.location, second.location
+        #  consider only the first 1000 rows from the table
+        FROM (SELECT  * FROM covid_deaths LIMIT 1000) As first,
+             (SELECT  * FROM covid_deaths LIMIT 1000) AS second
+            # 2 different locations with the same amount of new cases in the same date
+            WHERE first.new_cases = second.new_cases AND first.date = second.date
+            AND first.location < second.location AND first.new_cases > 1000 
+            # amount of new_cases is greater than 1000
     """)
     print(', '.join(str(row) for row in cursor.fetchall()))
 
