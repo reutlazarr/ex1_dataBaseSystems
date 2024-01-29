@@ -13,8 +13,8 @@ if __name__ == '__main__':
 
     cursor.execute("""
         SELECT x.date, x.new_cases, x.location, y.location
-        FROM (SELECT * FROM covid_deaths LIMIT 10000) As x,
-             (SELECT * FROM covid_deaths LIMIT 10000) AS y
+        FROM (SELECT * FROM covid_deaths LIMIT 1000) As x,
+             (SELECT * FROM covid_deaths LIMIT 1000) AS y
         WHERE x.new_cases = y.new_cases
         AND x.location < y.location
         AND x.date = y.date
